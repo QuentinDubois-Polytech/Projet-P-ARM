@@ -30,7 +30,6 @@
       <a name="width" val="2"/>
     </tool>
     <tool name="Ground">
-      <a name="facing" val="west"/>
       <a name="width" val="24"/>
     </tool>
     <tool name="Transistor">
@@ -235,6 +234,10 @@ end TCL_Generic;
       <text dominant-baseline="central" font-family="SansSerif" font-size="12" text-anchor="middle" x="196" y="143">Flags_Update_Mask</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="12" text-anchor="middle" x="85" y="84">Enable</text>
     </appear>
+    <comp lib="0" loc="(100,770)" name="Ground">
+      <a name="facing" val="west"/>
+      <a name="width" val="3"/>
+    </comp>
     <comp lib="0" loc="(160,640)" name="Tunnel">
       <a name="facing" val="south"/>
       <a name="label" val="A"/>
@@ -291,6 +294,9 @@ end TCL_Generic;
       <a name="label" val="B"/>
       <a name="width" val="3"/>
     </comp>
+    <comp lib="0" loc="(330,840)" name="Ground">
+      <a name="width" val="3"/>
+    </comp>
     <comp lib="0" loc="(370,640)" name="Tunnel">
       <a name="facing" val="south"/>
       <a name="label" val="A"/>
@@ -311,6 +317,9 @@ end TCL_Generic;
     </comp>
     <comp lib="0" loc="(470,750)" name="Tunnel">
       <a name="label" val="Rn"/>
+      <a name="width" val="3"/>
+    </comp>
+    <comp lib="0" loc="(510,850)" name="Ground">
       <a name="width" val="3"/>
     </comp>
     <comp lib="0" loc="(540,640)" name="Tunnel">
@@ -555,6 +564,12 @@ end TCL_Generic;
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="Note: instructions that does not save the result will still have the second operand as the destination register, the ALU will copy the second register to the destination register"/>
     </comp>
+    <wire from="(100,770)" to="(120,770)"/>
+    <wire from="(120,750)" to="(120,770)"/>
+    <wire from="(120,750)" to="(190,750)"/>
+    <wire from="(120,770)" to="(120,780)"/>
+    <wire from="(120,770)" to="(190,770)"/>
+    <wire from="(120,780)" to="(190,780)"/>
     <wire from="(160,640)" to="(160,670)"/>
     <wire from="(160,670)" to="(160,680)"/>
     <wire from="(160,670)" to="(190,670)"/>
@@ -591,6 +606,8 @@ end TCL_Generic;
     <wire from="(330,760)" to="(330,800)"/>
     <wire from="(330,760)" to="(400,760)"/>
     <wire from="(330,800)" to="(400,800)"/>
+    <wire from="(330,820)" to="(330,840)"/>
+    <wire from="(330,820)" to="(400,820)"/>
     <wire from="(370,640)" to="(370,670)"/>
     <wire from="(370,670)" to="(370,680)"/>
     <wire from="(370,670)" to="(400,670)"/>
@@ -620,6 +637,8 @@ end TCL_Generic;
     <wire from="(420,70)" to="(420,80)"/>
     <wire from="(420,830)" to="(420,860)"/>
     <wire from="(440,750)" to="(470,750)"/>
+    <wire from="(510,760)" to="(510,850)"/>
+    <wire from="(510,760)" to="(610,760)"/>
     <wire from="(540,640)" to="(540,670)"/>
     <wire from="(540,670)" to="(540,680)"/>
     <wire from="(540,670)" to="(610,670)"/>
@@ -693,7 +712,6 @@ end TCL_Generic;
     <wire from="(820,770)" to="(880,770)"/>
     <wire from="(820,790)" to="(880,790)"/>
     <wire from="(820,810)" to="(880,810)"/>
-    <wire from="(880,820)" to="(890,820)"/>
     <wire from="(900,830)" to="(900,860)"/>
     <wire from="(920,750)" to="(970,750)"/>
   </circuit>
