@@ -233,12 +233,10 @@ end TCL_Generic;
       <a name="label" val="Conditional"/>
       <a name="output" val="true"/>
     </comp>
-    <comp lib="0" loc="(70,150)" name="Ground">
-      <a name="facing" val="west"/>
-    </comp>
-    <comp lib="0" loc="(80,120)" name="Splitter">
+    <comp lib="0" loc="(80,110)" name="Splitter">
+      <a name="bit5" val="none"/>
       <a name="facing" val="south"/>
-      <a name="fanout" val="6"/>
+      <a name="fanout" val="5"/>
       <a name="incoming" val="6"/>
     </comp>
     <comp lib="0" loc="(80,80)" name="Pin">
@@ -261,17 +259,16 @@ end TCL_Generic;
     <comp lib="8" loc="(505,230)" name="Text">
       <a name="text" val="Data Processing"/>
     </comp>
-    <wire from="(100,140)" to="(100,510)"/>
-    <wire from="(100,510)" to="(240,510)"/>
-    <wire from="(110,140)" to="(110,390)"/>
-    <wire from="(110,390)" to="(240,390)"/>
-    <wire from="(120,140)" to="(120,310)"/>
-    <wire from="(120,310)" to="(240,310)"/>
-    <wire from="(130,140)" to="(130,220)"/>
-    <wire from="(130,220)" to="(240,220)"/>
-    <wire from="(140,140)" to="(240,140)"/>
-    <wire from="(70,150)" to="(90,150)"/>
-    <wire from="(80,80)" to="(80,120)"/>
-    <wire from="(90,140)" to="(90,150)"/>
+    <wire from="(100,130)" to="(100,390)"/>
+    <wire from="(100,390)" to="(240,390)"/>
+    <wire from="(110,130)" to="(110,310)"/>
+    <wire from="(110,310)" to="(240,310)"/>
+    <wire from="(120,130)" to="(120,220)"/>
+    <wire from="(120,220)" to="(240,220)"/>
+    <wire from="(130,130)" to="(130,140)"/>
+    <wire from="(130,140)" to="(240,140)"/>
+    <wire from="(80,80)" to="(80,110)"/>
+    <wire from="(90,130)" to="(90,510)"/>
+    <wire from="(90,510)" to="(240,510)"/>
   </circuit>
 </project>
