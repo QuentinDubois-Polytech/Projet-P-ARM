@@ -29,7 +29,7 @@
       <a name="width" val="2"/>
     </tool>
     <tool name="Ground">
-      <a name="facing" val="west"/>
+      <a name="facing" val="north"/>
       <a name="width" val="24"/>
     </tool>
     <tool name="Transistor">
@@ -379,6 +379,9 @@ end TCL_Generic;
       <a name="label" val="offset"/>
       <a name="width" val="11"/>
     </comp>
+    <comp lib="0" loc="(370,710)" name="Ground">
+      <a name="facing" val="north"/>
+    </comp>
     <comp lib="0" loc="(390,700)" name="Constant">
       <a name="facing" val="south"/>
     </comp>
@@ -689,6 +692,8 @@ end TCL_Generic;
     <wire from="(210,50)" to="(230,50)"/>
     <wire from="(230,640)" to="(230,660)"/>
     <wire from="(250,620)" to="(280,620)"/>
+    <wire from="(370,710)" to="(370,900)"/>
+    <wire from="(370,900)" to="(690,900)"/>
     <wire from="(390,700)" to="(390,890)"/>
     <wire from="(390,890)" to="(690,890)"/>
     <wire from="(410,700)" to="(410,880)"/>
