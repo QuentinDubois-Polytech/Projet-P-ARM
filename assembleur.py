@@ -1,95 +1,116 @@
 import sys
 from pathlib import Path
+import fileinput
 
-file_name_read = sys.argv[1]  # path of the file
-file_name_write = Path(sys.argv[1]).stem + ".bin"  # name of the entry file with the extension .bin
+if len(sys.argv) == 2:
+    file_name_read = sys.argv[1]  # path of the file
+    file_name_write = Path(sys.argv[1]).stem + ".bin"  # name of the entry file with the extension .bin
+else:
+    print("Il faut rentrer un fichier en paramètre")
+    sys.exit()
+
 line_counter = 0
+line_instruction_main = 0
 
 
 def line_analyser(assembly_language_instruction):
     """ Analyse an instruction of assembly language and redirect it into the right function"""
     list_instruction = assembly_language_instruction.split(' ', 1)
+    if assembly_language_instruction[0] == 'b':
+        if assembly_language_instruction[1] == ' ':
+            label = assembly_language_instruction.split('.')[1].rstrip("\n")
+            print("unconditional branch " + label)
+            previous_line = file_read.tell()
+            immediate11 = find_immediate_branch(label)
+            unconditional_branch(immediate11)
+            file_read.seek(previous_line)
+        else:
+            condition = assembly_language_instruction[1:3]
+            label = assembly_language_instruction.split('.')[1].rstrip("\n")
+            previous_line = file_read.tell()
+            print("conditional branch " + label)
+            immediate8 = find_immediate_branch(label)
+            conditional_branch(conditional_branch_codop(condition), immediate8)
+            file_read.seek(previous_line)
 
-    if len(list_instruction) <= 1:
-        raise ValueError("Instruction incorrect : ligne " + str(line_counter))
+    else:
+        instruction = list_instruction[0]
+        string_instruction = "".join(list_instruction)
+        list_parameters = parameters_analyser("".join(list_instruction[1:]).replace("r", ""))
 
-    instruction = list_instruction[0]
-    string_instruction = "".join(list_instruction)
-    list_parameters = parameters_analyser("".join(list_instruction[1:]).replace("r", ""))
+        match instruction:
+            case "lsls":
+                shift("0100000010", "00000", string_instruction, list_parameters)
 
-    match instruction:
-        case "lsls":
-            shift("0100000010", "00000", string_instruction, list_parameters)
+            case "lsrs":
+                shift("0100000011", "00001", string_instruction, list_parameters)
 
-        case "lsrs":
-            shift("0100000011", "00001", string_instruction, list_parameters)
+            case "asrs":
+                shift("0100000100", "00010", string_instruction, list_parameters)
 
-        case "asrs":
-            shift("0100000100", "00010", string_instruction, list_parameters)
+            case "adds":
+                adds_subs("0001100", "0001110", "00110", string_instruction, list_parameters)
 
-        case "adds":
-            adds_subs("0001100", "0001110", "00110", string_instruction, list_parameters)
+            case "subs":
+                adds_subs("0001101", "0001111", "00111", string_instruction, list_parameters)
 
-        case "subs":
-            adds_subs("0001101", "0001111", "00111", string_instruction, list_parameters)
+            case "movs":
+                op_immediate8("00100", string_instruction, list_parameters, False)
 
-        case "movs":
-            op_immediate8("00100", string_instruction, list_parameters, False)
+            case "ands":
+                op_register_data_processing("0100000000", list_parameters)
 
-        case "ands":
-            op_register_data_processing("0100000000", list_parameters)
+            case "eors":
+                op_register_data_processing("0100000001", list_parameters)
 
-        case "eors":
-            op_register_data_processing("0100000001", list_parameters)
+            case "adcs":
+                op_register_data_processing("0100000101", list_parameters)
 
-        case "adcs":
-            op_register_data_processing("0100000101", list_parameters)
+            case "sbcs":
+                op_register_data_processing("0100000110", list_parameters)
 
-        case "sbcs":
-            op_register_data_processing("0100000110", list_parameters)
+            case "rors":
+                op_register_data_processing("0100000111", list_parameters)
 
-        case "rors":
-            op_register_data_processing("0100000111", list_parameters)
+            case "tst":
+                op_register_data_processing("0100001000", list_parameters)
 
-        case "tst":
-            op_register_data_processing("0100001000", list_parameters)
+            case "rsbs":
+                op_register_data_processing("0100001001", list_parameters)
 
-        case "rsbs":
-            op_register_data_processing("0100001001", list_parameters)
+            case "cmp":
+                shift("0100001010", "00101", string_instruction, list_parameters)
 
-        case "cmp":
-            shift("0100001010", "00101", string_instruction, list_parameters)
+            case "cmn":
+                op_register_data_processing("0100001011", list_parameters)
 
-        case "cmn":
-            op_register_data_processing("0100001011", list_parameters)
+            case "orrs":
+                op_register_data_processing("0100001100", list_parameters)
 
-        case "orrs":
-            op_register_data_processing("0100001100", list_parameters)
+            case "muls":
+                op_register_data_processing("0100001101", list_parameters)
 
-        case "muls":
-            op_register_data_processing("0100001101", list_parameters)
+            case "bics":
+                op_register_data_processing("0100001110", list_parameters)
 
-        case "bics":
-            op_register_data_processing("0100001110", list_parameters)
+            case "mvns":
+                op_register_data_processing("0100001111", list_parameters)
 
-        case "mvns":
-            op_register_data_processing("0100001111", list_parameters)
+            case "str":
+                list_parameters = remover_sp_str_load(list_parameters)
+                op_immediate8("10010", string_instruction, list_parameters, True)
 
-        case "str":
-            list_parameters = remover_sp_str_load(list_parameters)
-            op_immediate8("10010", string_instruction, list_parameters, True)
+            case "ldr":
+                list_parameters = remover_sp_str_load(list_parameters)
+                op_immediate8("10011", string_instruction, list_parameters, True)
 
-        case "ldr":
-            list_parameters = remover_sp_str_load(list_parameters)
-            op_immediate8("10011", string_instruction, list_parameters, True)
+            case "add":
+                list_parameters = remover_sp_add_sub(list_parameters)
+                add_sub("101100000", list_parameters, string_instruction)
 
-        case "add":
-            list_parameters = remover_sp_add_sub(list_parameters)
-            add_sub("101100000", list_parameters, string_instruction)
-
-        case "sub":
-            list_parameters = remover_sp_add_sub(list_parameters)
-            add_sub("101100001", list_parameters, string_instruction)
+            case "sub":
+                list_parameters = remover_sp_add_sub(list_parameters)
+                add_sub("101100001", list_parameters, string_instruction)
 
 
 def shift(codop_register, codop_immediate5, string_parameters, list_parameters):
@@ -169,10 +190,69 @@ def op_immediate8(codop, string_instruction, list_parameters, divide_by_4):
     print_file(binary_code)
 
 
+def conditional_branch_codop(string_condition):
+    match string_condition:
+        case "EQ":
+            return "0000"
+        case "NE":
+            return "0001"
+        case "CS":
+            return "0010"
+        case "HS":
+            return "0010"
+        case "CC":
+            return "0011"
+        case "LO":
+            return "0011"
+        case "MI":
+            return "0100"
+        case "PL":
+            return "0101"
+        case "VS":
+            return "0110"
+        case "VC":
+            return "0111"
+        case "HI":
+            return "1000"
+        case "LS":
+            return "1001"
+        case "GE":
+            return "1010"
+        case "LT":
+            return "1011"
+        case "GT":
+            return "1100"
+        case "LE":
+            return "1101"
+        case "AL":
+            return "1111"
+
+
+def conditional_branch(condition, imm8):
+    code = "1101" + condition + immediate(imm8, 8)
+    binary_code = convert_hex(code)
+    print_file(binary_code)
+
+
+def unconditional_branch(imm11):
+    code = "11100" + immediate(imm11, 11)
+    binary_code = convert_hex(code)
+    print_file(binary_code)
+
+
+def find_immediate_branch(label):
+    previous_line = line_instruction_main
+    next_line = read_file_search_label(label)
+    print("previous line : " + str(previous_line))
+    print("next line : " + str(next_line))
+    print(str(next_line - previous_line - 3))
+    return str(next_line - previous_line - 3)
+
+
 def parameters_analyser(string_instruction):
     """ Return a list with the parameters of the instruction.
         A post treatment may be required for some instruction """
-    return string_instruction.split(', ')
+    return string_instruction.replace(" ", "").split(',')
 
 
 def instruction_finder(string_instruction):
@@ -204,7 +284,9 @@ def immediate_divide_by_n(string_immediate, nb_immediate, n):
 def immediate(string_immediate, nb_immediate):
     """ Convert the string representing an immediate in a string representing the same number without the '#'
         and with the same number of digits indicated by the parameter nb_immediate"""
-    return "{0:b}".format(int(string_immediate.strip('#'), 10)).zfill(nb_immediate)
+
+    string_decimal = string_immediate.lstrip('#')
+    return convert_binary(string_decimal, nb_immediate)
 
 
 def convert_hex(string_number):
@@ -214,7 +296,19 @@ def convert_hex(string_number):
 
 def convert_binary(string_number, nb_bytes):
     """ Convert a string representing a decimal number in a string representing the same number in the base 2 """
-    return "{0:b}".format(int(string_number, 10)).zfill(nb_bytes)
+
+    if '-' not in string_number:
+        return "{0:b}".format(int(string_number, 10)).zfill(nb_bytes)
+    else:
+        return one_fill("{0:b}".format(~int(string_number, 10) + 1), nb_bytes)
+
+
+def one_fill(string_number, nb_bytes):
+    length = len(string_number)
+    while length < nb_bytes:
+        string_number = "1" + string_number
+        length += 1
+    return string_number
 
 
 def erase_file(file_name):
@@ -226,24 +320,43 @@ def erase_file(file_name):
 def print_file(string):
     """ Write the string passed in parameter in the file"""
     print(string)
-    with open(file_name_write, 'a') as file_write:
-        file_write.write(string + " ")
+    print("{0:b}".format(int(string, 16)))
+    file_write.write(string + " ")
 
 
-def read_file(file_name):
+def read_file():
     """ Read each line of the file passed in parameter"""
     global line_counter
+    global line_instruction_main
 
-    with open(file_name, 'r') as file_read:
+    file_line = file_read.readline()
+    while file_line:
+        line_counter += 1
+        if not file_line.startswith('.') and not file_line.startswith('@') and file_line != '\n':
+            line_instruction_main += 1
+        if not file_line.startswith('@') and file_line != '\n':  # to skip the comments and empty line
+            line_analyser(file_line)
         file_line = file_read.readline()
 
-        while file_line:
-            line_counter += 1
-            if not file_line.startswith('@') and file_line != '\n':  # to skip the comments
-                line_analyser(file_line)
-            file_line = file_read.readline()
+
+def read_file_search_label(label):
+    line_instruction_secondary = 0
+    file_read.seek(0)
+    file_line = file_read.readline()
+
+    while file_line:
+        if not file_line.startswith('.') and not file_line.startswith('@') and file_line != '\n':
+            line_instruction_secondary += 1
+        if file_line == "." + label + ":\n":  # to skip the comments and empty line
+
+            return line_instruction_secondary + 1
+        file_line = file_read.readline()
 
 
 if __name__ == '__main__':
     erase_file(file_name_write)
-    read_file(file_name_read)
+    file_read = open(file_name_read, 'r')
+    file_write = open(file_name_write, 'a')
+    read_file()
+    file_read.close()
+    file_write.close()
