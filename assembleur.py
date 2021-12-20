@@ -1,6 +1,5 @@
 import sys
 from pathlib import Path
-import fileinput
 
 if len(sys.argv) == 2:
     file_name_read = sys.argv[1]  # path of the file
@@ -16,10 +15,9 @@ line_instruction_main = 0
 def line_analyser(assembly_language_instruction):
     """ Analyse an instruction of assembly language and redirect it into the right function"""
     list_instruction = assembly_language_instruction.split(' ', 1)
-    if assembly_language_instruction[0] == 'b':
+    if assembly_language_instruction[0] == 'b' and list_instruction[0] != "bics":
         if assembly_language_instruction[1] == ' ':
             label = assembly_language_instruction.split('.')[1].rstrip("\n")
-            print("unconditional branch " + label)
             previous_line = file_read.tell()
             immediate11 = find_immediate_branch(label)
             unconditional_branch(immediate11)
@@ -28,7 +26,6 @@ def line_analyser(assembly_language_instruction):
             condition = assembly_language_instruction[1:3]
             label = assembly_language_instruction.split('.')[1].rstrip("\n")
             previous_line = file_read.tell()
-            print("conditional branch " + label)
             immediate8 = find_immediate_branch(label)
             conditional_branch(conditional_branch_codop(condition), immediate8)
             file_read.seek(previous_line)
@@ -243,9 +240,6 @@ def unconditional_branch(imm11):
 def find_immediate_branch(label):
     previous_line = line_instruction_main
     next_line = read_file_search_label(label)
-    print("previous line : " + str(previous_line))
-    print("next line : " + str(next_line))
-    print(str(next_line - previous_line - 3))
     return str(next_line - previous_line - 3)
 
 
@@ -294,21 +288,22 @@ def convert_hex(string_number):
     return "{0:x}".format(int(string_number, 2)).zfill(4)
 
 
-def convert_binary(string_number, nb_bytes):
-    """ Convert a string representing a decimal number in a string representing the same number in the base 2 """
+# Returns bit y of x (10 base).  i.e.
+# bit 2 of 5 is 1
+# bit 1 of 5 is 0
+# bit 0 of 5 is 1
+# Code provenant : https://askcodez.com/en-complement-a-deux-binaires-en-python.html
+def get_bit(y, x):
+    return str((x >> y) & 1)
 
-    if '-' not in string_number:
-        return "{0:b}".format(int(string_number, 10)).zfill(nb_bytes)
-    else:
-        return one_fill("{0:b}".format(~int(string_number, 10) + 1), nb_bytes)
 
-
-def one_fill(string_number, nb_bytes):
-    length = len(string_number)
-    while length < nb_bytes:
-        string_number = "1" + string_number
-        length += 1
-    return string_number
+# Returns the first `count` bits of base 10 integer `x`
+# Code provenant : https://askcodez.com/en-complement-a-deux-binaires-en-python.html
+def convert_binary(x, count=8):
+    x = int(x, 10)
+    shift = range(count - 1, -1, -1)
+    bits = map(lambda y: get_bit(y, x), shift)
+    return "".join(bits)
 
 
 def erase_file(file_name):
@@ -320,7 +315,6 @@ def erase_file(file_name):
 def print_file(string):
     """ Write the string passed in parameter in the file"""
     print(string)
-    print("{0:b}".format(int(string, 16)))
     file_write.write(string + " ")
 
 
@@ -335,7 +329,7 @@ def read_file():
         if not file_line.startswith('.') and not file_line.startswith('@') and file_line != '\n':
             line_instruction_main += 1
         if not file_line.startswith('@') and file_line != '\n':  # to skip the comments and empty line
-            line_analyser(file_line)
+            line_analyser(file_line.strip())
         file_line = file_read.readline()
 
 
@@ -348,7 +342,6 @@ def read_file_search_label(label):
         if not file_line.startswith('.') and not file_line.startswith('@') and file_line != '\n':
             line_instruction_secondary += 1
         if file_line == "." + label + ":\n":  # to skip the comments and empty line
-
             return line_instruction_secondary + 1
         file_line = file_read.readline()
 
