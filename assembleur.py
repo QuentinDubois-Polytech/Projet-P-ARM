@@ -1,4 +1,5 @@
 import sys
+import re
 from pathlib import Path
 
 if len(sys.argv) == 2:
@@ -14,139 +15,210 @@ line_instruction_main = 0
 
 def line_analyser(assembly_language_instruction):
     """ Analyse an instruction of assembly language and redirect it into the right function"""
-    list_instruction = assembly_language_instruction.split(' ', 1)
-    if assembly_language_instruction[0] == 'b' and list_instruction[0] != "bics":
-        if assembly_language_instruction[1] == ' ':
-            label = assembly_language_instruction.split('.')[1].rstrip("\n")
-            previous_line = file_read.tell()
-            immediate11 = find_immediate_branch(label)
-            unconditional_branch(immediate11)
-            file_read.seek(previous_line)
+    # print(assembly_language_instruction)
+    list_instruction = list_conversion(assembly_language_instruction)
+    if len(list_instruction) == 2:
+        if assembly_language_instruction[0] == 'b' and list_instruction[0] != "bics":
+            if assembly_language_instruction[1].isspace():
+                label = assembly_language_instruction.split('.')[1]
+                previous_line = file_read.tell()
+                immediate11 = find_immediate_branch(label)
+                unconditional_branch(immediate11)
+                file_read.seek(previous_line)
+            else:
+                condition = assembly_language_instruction[1:3].upper()
+                label = assembly_language_instruction.split('.')[1]
+                previous_line = file_read.tell()
+                immediate8 = find_immediate_branch(label)
+                conditional_branch(conditional_branch_codop(condition), immediate8)
+                file_read.seek(previous_line)
+
         else:
-            condition = assembly_language_instruction[1:3]
-            label = assembly_language_instruction.split('.')[1].rstrip("\n")
-            previous_line = file_read.tell()
-            immediate8 = find_immediate_branch(label)
-            conditional_branch(conditional_branch_codop(condition), immediate8)
-            file_read.seek(previous_line)
+            instruction = list_instruction[0]
+            list_parameters = parameters_analyser("".join(list_instruction[1:]).replace("r", ""))
+            operation(instruction, assembly_language_instruction, list_parameters)
 
+
+def operation(instruction, assembly_language_instruction, list_parameters):
+    match instruction:
+        case "lsls":
+            shift("0100000010", "00000", assembly_language_instruction, list_parameters)
+
+        case "lsrs":
+            shift("0100000011", "00001", assembly_language_instruction, list_parameters)
+
+        case "asrs":
+            shift("0100000100", "00010", assembly_language_instruction, list_parameters)
+
+        case "adds":
+            adds_subs("0001100", "0001110", "00110", assembly_language_instruction, list_parameters)
+
+        case "subs":
+            adds_subs("0001101", "0001111", "00111", assembly_language_instruction, list_parameters)
+
+        case "movs":
+            op_immediate8("00100", assembly_language_instruction, list_parameters, False)
+
+        case "ands":
+            op_register_data_processing("0100000000", list_parameters)
+
+        case "eors":
+            op_register_data_processing("0100000001", list_parameters)
+
+        case "adcs":
+            op_register_data_processing("0100000101", list_parameters)
+
+        case "sbcs":
+            op_register_data_processing("0100000110", list_parameters)
+
+        case "rors":
+            op_register_data_processing("0100000111", list_parameters)
+
+        case "tst":
+            op_register_data_processing("0100001000", list_parameters)
+
+        case "rsbs":
+            op_register_data_processing("0100001001", list_parameters)
+
+        case "cmp":
+            cmp("0100001010", "00101", assembly_language_instruction, list_parameters)
+
+        case "cmn":
+            op_register_data_processing("0100001011", list_parameters)
+
+        case "orrs":
+            op_register_data_processing("0100001100", list_parameters)
+
+        case "muls":
+            op_register_data_processing("0100001101", list_parameters)
+
+        case "bics":
+            op_register_data_processing("0100001110", list_parameters)
+
+        case "mvns":
+            op_register_data_processing("0100001111", list_parameters)
+
+        case "str":
+            list_parameters = remover_sp_str_load(list_parameters)
+            op_immediate8("10010", assembly_language_instruction, list_parameters, True)
+
+        case "ldr":
+            list_parameters = remover_sp_str_load(list_parameters)
+            op_immediate8("10011", assembly_language_instruction, list_parameters, True)
+
+        case "add":
+            add_sub("101100000", list_parameters, assembly_language_instruction)
+
+        case "sub":
+            add_sub("101100001", list_parameters, assembly_language_instruction)
+
+
+def conditional_branch_codop(string_condition):
+    match string_condition:
+        case "EQ":
+            return "0000"
+
+        case "NE":
+            return "0001"
+
+        case "CS":
+            return "0010"
+
+        case "HS":
+            return "0010"
+
+        case "CC":
+            return "0011"
+
+        case "LO":
+            return "0011"
+
+        case "MI":
+            return "0100"
+
+        case "PL":
+            return "0101"
+
+        case "VS":
+            return "0110"
+
+        case "VC":
+            return "0111"
+
+        case "HI":
+            return "1000"
+
+        case "LS":
+            return "1001"
+
+        case "GE":
+            return "1010"
+
+        case "LT":
+            return "1011"
+
+        case "GT":
+            return "1100"
+
+        case "LE":
+            return "1101"
+
+        case "AL":
+            return "1111"
+
+
+def cmp(codop_register, codop_immediate8, assembly_language_instruction, list_parameters):
+    length = len(list_parameters)
+    list_assembly_language_instruction = list_conversion(assembly_language_instruction)
+    if "#" in list_assembly_language_instruction[1] and length == 2:
+        op_immediate8(codop_immediate8, list_assembly_language_instruction[1], list_parameters, False)
+    elif length == 2:
+        op_register_data_processing(codop_register, list_parameters)
     else:
-        instruction = list_instruction[0]
-        string_instruction = "".join(list_instruction)
-        list_parameters = parameters_analyser("".join(list_instruction[1:]).replace("r", ""))
-
-        match instruction:
-            case "lsls":
-                shift("0100000010", "00000", string_instruction, list_parameters)
-
-            case "lsrs":
-                shift("0100000011", "00001", string_instruction, list_parameters)
-
-            case "asrs":
-                shift("0100000100", "00010", string_instruction, list_parameters)
-
-            case "adds":
-                adds_subs("0001100", "0001110", "00110", string_instruction, list_parameters)
-
-            case "subs":
-                adds_subs("0001101", "0001111", "00111", string_instruction, list_parameters)
-
-            case "movs":
-                op_immediate8("00100", string_instruction, list_parameters, False)
-
-            case "ands":
-                op_register_data_processing("0100000000", list_parameters)
-
-            case "eors":
-                op_register_data_processing("0100000001", list_parameters)
-
-            case "adcs":
-                op_register_data_processing("0100000101", list_parameters)
-
-            case "sbcs":
-                op_register_data_processing("0100000110", list_parameters)
-
-            case "rors":
-                op_register_data_processing("0100000111", list_parameters)
-
-            case "tst":
-                op_register_data_processing("0100001000", list_parameters)
-
-            case "rsbs":
-                op_register_data_processing("0100001001", list_parameters)
-
-            case "cmp":
-                shift("0100001010", "00101", string_instruction, list_parameters)
-
-            case "cmn":
-                op_register_data_processing("0100001011", list_parameters)
-
-            case "orrs":
-                op_register_data_processing("0100001100", list_parameters)
-
-            case "muls":
-                op_register_data_processing("0100001101", list_parameters)
-
-            case "bics":
-                op_register_data_processing("0100001110", list_parameters)
-
-            case "mvns":
-                op_register_data_processing("0100001111", list_parameters)
-
-            case "str":
-                list_parameters = remover_sp_str_load(list_parameters)
-                op_immediate8("10010", string_instruction, list_parameters, True)
-
-            case "ldr":
-                list_parameters = remover_sp_str_load(list_parameters)
-                op_immediate8("10011", string_instruction, list_parameters, True)
-
-            case "add":
-                list_parameters = remover_sp_add_sub(list_parameters)
-                add_sub("101100000", list_parameters, string_instruction)
-
-            case "sub":
-                list_parameters = remover_sp_add_sub(list_parameters)
-                add_sub("101100001", list_parameters, string_instruction)
+        instruction_error(list_assembly_language_instruction[0])
 
 
-def shift(codop_register, codop_immediate5, string_parameters, list_parameters):
+def shift(codop_register, codop_immediate5, assembly_language_instruction, list_parameters):
     """ Redirect the instruction of type shift into the right function """
     length = len(list_parameters)
-    if "#" in string_parameters and length == 3:
+    list_assembly_language_instruction = list_conversion(assembly_language_instruction)
+    if "#" in list_assembly_language_instruction[1] and length == 3:
         op_immediate(codop_immediate5, 5, list_parameters)
     elif length == 2:
         op_register_data_processing(codop_register, list_parameters)
     else:
-        instruction_error(string_parameters)
+        instruction_error(list_assembly_language_instruction[0])
 
 
-def adds_subs(codop_register, codop_immediate3, codop_immediate8, string_instruction, list_parameters):
+def adds_subs(codop_register, codop_immediate3, codop_immediate8, assembly_language_instruction, list_parameters):
     """ Redirect the instruction of type adds_subs into the right function """
     length = len(list_parameters)
-    if "#" in string_instruction and length == 3:
+    list_assembly_language_instruction = list_conversion(assembly_language_instruction)
+    if "#" in list_assembly_language_instruction[1] and length == 3:
         op_immediate(codop_immediate3, 3, list_parameters)
-    elif "#" in string_instruction and length == 2:
-        op_immediate8(codop_immediate8, string_instruction, list_parameters, False)
+    elif "#" in list_assembly_language_instruction[1] and length == 2:
+        op_immediate8(codop_immediate8, list_assembly_language_instruction[1], list_parameters, False)
     elif length == 3:
         op_immediate(codop_register, 3, list_parameters)
     else:
-        instruction_error(string_instruction)
+        instruction_error(list_assembly_language_instruction[0])
 
 
-def add_sub(codop, list_parameters, string_instruction):
+def add_sub(codop, list_parameters, assembly_language_instruction):
     """ Calculate the conversion of the instruction of type add_sub in binary code
         And write the result in the file_name_write """
-    if "sp" not in string_instruction or "#" not in string_instruction:
-        instruction_error(string_instruction)
-    if len(list_parameters) != 1:
-        instruction_error(string_instruction)
+    list_assembly_language_instruction = list_conversion(assembly_language_instruction)
+    if "sp" not in list_assembly_language_instruction[1] or "#" not in list_assembly_language_instruction[1]:
+        instruction_error(list_assembly_language_instruction[0])
+    elif len(list_parameters) != 2:
+        instruction_error(list_assembly_language_instruction[0])
+    else:
+        list_parameters = remover_sp_add_sub(list_parameters)
+        nb_immediate = 7
+        immediate7 = immediate_divide_by_n(list_parameters[0], nb_immediate, 4)
 
-    nb_immediate = 7
-    immediate7 = immediate_divide_by_n(list_parameters[0], nb_immediate, 4)
-
-    binary_code = convert_hex(codop + immediate7)
-    print_file(binary_code)
+        binary_code = convert_hex(codop + immediate7)
+        print_file(binary_code)
 
 
 def op_immediate(codop, nb_immediate, list_parameters):
@@ -170,59 +242,25 @@ def op_register_data_processing(codop, list_parameters):
     print_file(binary_code)
 
 
-def op_immediate8(codop, string_instruction, list_parameters, divide_by_4):
+def op_immediate8(codop, assembly_language_instruction, list_parameters, divide_by_4):
     """ Calculate the conversion of the instruction in binary code
         And write the result in the file_name_write """
+    list_assembly_language_instruction = list_conversion(assembly_language_instruction)
+
     if len(list_parameters) != 2:
-        instruction_error(string_instruction)
-
-    Rd = convert_binary(list_parameters[0], 3)
-
-    if divide_by_4:
-        immediate8 = immediate_divide_by_n(list_parameters[1], 8, 4)
+        instruction_error(list_assembly_language_instruction[0])
+    elif "#" not in list_parameters[1]:
+        instruction_error(list_assembly_language_instruction[0])
     else:
-        immediate8 = immediate(list_parameters[1], 8)
+        Rd = convert_binary(list_parameters[0], 3)
 
-    binary_code = convert_hex(codop + Rd + immediate8)
-    print_file(binary_code)
+        if divide_by_4:
+            immediate8 = immediate_divide_by_n(list_parameters[1], 8, 4)
+        else:
+            immediate8 = immediate(list_parameters[1], 8)
 
-
-def conditional_branch_codop(string_condition):
-    match string_condition:
-        case "EQ":
-            return "0000"
-        case "NE":
-            return "0001"
-        case "CS":
-            return "0010"
-        case "HS":
-            return "0010"
-        case "CC":
-            return "0011"
-        case "LO":
-            return "0011"
-        case "MI":
-            return "0100"
-        case "PL":
-            return "0101"
-        case "VS":
-            return "0110"
-        case "VC":
-            return "0111"
-        case "HI":
-            return "1000"
-        case "LS":
-            return "1001"
-        case "GE":
-            return "1010"
-        case "LT":
-            return "1011"
-        case "GT":
-            return "1100"
-        case "LE":
-            return "1101"
-        case "AL":
-            return "1111"
+        binary_code = convert_hex(codop + Rd + immediate8)
+        print_file(binary_code)
 
 
 def conditional_branch(condition, imm8):
@@ -243,25 +281,33 @@ def find_immediate_branch(label):
     return str(next_line - previous_line - 3)
 
 
+def list_conversion(assembly_language_instruction):
+    return re.split("\s", assembly_language_instruction, 1)
+
+
 def parameters_analyser(string_instruction):
     """ Return a list with the parameters of the instruction.
         A post treatment may be required for some instruction """
-    return string_instruction.replace(" ", "").split(',')
-
-
-def instruction_finder(string_instruction):
-    """ Find the name of the instruction through a string containing the instruction """
-    return string_instruction.split(' ')[0]
+    return string_instruction.split(', ')
 
 
 def instruction_error(string_instruction):
     """ Return an error with the name instruction and the line """
-    raise ValueError("Erreur Instruction " + instruction_finder(string_instruction) + " ligne : " + str(line_counter))
+    print("erreur instruction " + string_instruction.upper() + " ligne : " + str(line_counter))
 
 
 def remover_sp_str_load(list_parameters):
     """ Remove the sp and the brackets of the elements of the list """
-    return [list_parameters[0], list_parameters[2].replace("]", "")]
+    i = 0
+    length = len(list_parameters)
+    while i < length:
+        list_parameters[i] = list_parameters[i].replace("[", "").replace("]", "").replace("sp", "")
+        i += 1
+    list_parameters.remove("")
+
+    if len(list_parameters) == 1:
+        list_parameters.append("#0")
+    return [list_parameters[0], list_parameters[1]]
 
 
 def remover_sp_add_sub(list_parameters):
@@ -312,10 +358,10 @@ def erase_file(file_name):
         pass
 
 
-def print_file(string):
+def print_file(string_hexa_code):
     """ Write the string passed in parameter in the file"""
-    print(string)
-    file_write.write(string + " ")
+    print(string_hexa_code)
+    file_write.write(string_hexa_code + " ")
 
 
 def read_file():
@@ -323,27 +369,27 @@ def read_file():
     global line_counter
     global line_instruction_main
 
-    file_line = file_read.readline()
-    while file_line:
+    file_line = file_read.readline().strip()
+    while file_line != '':
         line_counter += 1
-        if not file_line.startswith('.') and not file_line.startswith('@') and file_line != '\n':
+        if not file_line.startswith('.') and not file_line.startswith(
+                '@') and file_line != '\n':  # to skip the comments and empty line
             line_instruction_main += 1
-        if not file_line.startswith('@') and file_line != '\n':  # to skip the comments and empty line
             line_analyser(file_line.strip())
-        file_line = file_read.readline()
+        file_line = file_read.readline().strip()
 
 
 def read_file_search_label(label):
     line_instruction_secondary = 0
     file_read.seek(0)
-    file_line = file_read.readline()
+    file_line = file_read.readline().strip()
 
-    while file_line:
+    while file_line != '':
         if not file_line.startswith('.') and not file_line.startswith('@') and file_line != '\n':
             line_instruction_secondary += 1
-        if file_line == "." + label + ":\n":  # to skip the comments and empty line
+        if file_line == "." + label + ":":  # to skip the comments and empty line
             return line_instruction_secondary + 1
-        file_line = file_read.readline()
+        file_line = file_read.readline().strip()
 
 
 if __name__ == '__main__':
