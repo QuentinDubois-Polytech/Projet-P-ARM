@@ -191,31 +191,31 @@ end TCL_Generic;
       <circ-port height="8" pin="170,160" width="8" x="46" y="36"/>
     </appear>
     <comp lib="0" loc="(1010,1750)" name="Constant">
-      <a name="value" val="0xe"/>
+      <a name="value" val="0xf"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(1030,1790)" name="Constant">
-      <a name="value" val="0xe"/>
+      <a name="value" val="0xf"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(1040,1740)" name="Constant">
-      <a name="value" val="0xd"/>
+      <a name="value" val="0xe"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(1050,1780)" name="Constant">
-      <a name="value" val="0xe"/>
+      <a name="value" val="0xf"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(1070,1730)" name="Constant">
-      <a name="value" val="0xd"/>
-      <a name="width" val="4"/>
-    </comp>
-    <comp lib="0" loc="(1070,1770)" name="Constant">
       <a name="value" val="0xe"/>
       <a name="width" val="4"/>
     </comp>
+    <comp lib="0" loc="(1070,1770)" name="Constant">
+      <a name="value" val="0xf"/>
+      <a name="width" val="4"/>
+    </comp>
     <comp lib="0" loc="(1090,1720)" name="Constant">
-      <a name="value" val="0xd"/>
+      <a name="value" val="0xe"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(1090,1760)" name="Constant">

@@ -4,7 +4,6 @@
 
   <lib desc="#Wiring" name="0">
     <tool name="Splitter">
-      <a name="facing" val="west"/>
       <a name="fanout" val="4"/>
       <a name="incoming" val="1"/>
     </tool>

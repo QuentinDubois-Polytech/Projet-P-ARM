@@ -381,7 +381,7 @@ end TCL_Generic;
       <a name="width" val="3"/>
     </comp>
     <comp lib="0" loc="(800,680)" name="Constant">
-      <a name="value" val="0xc"/>
+      <a name="value" val="0xe"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(800,700)" name="Constant">
@@ -397,7 +397,7 @@ end TCL_Generic;
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(800,760)" name="Constant">
-      <a name="value" val="0xc"/>
+      <a name="value" val="0xf"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(800,780)" name="Constant">
@@ -409,11 +409,11 @@ end TCL_Generic;
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(800,820)" name="Constant">
-      <a name="value" val="0xc"/>
+      <a name="value" val="0xe"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(820,670)" name="Constant">
-      <a name="value" val="0xc"/>
+      <a name="value" val="0xe"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(820,690)" name="Constant">
@@ -429,7 +429,7 @@ end TCL_Generic;
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(820,750)" name="Constant">
-      <a name="value" val="0xc"/>
+      <a name="value" val="0xe"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(820,770)" name="Constant">
@@ -437,11 +437,11 @@ end TCL_Generic;
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(820,790)" name="Constant">
-      <a name="value" val="0xc"/>
+      <a name="value" val="0xe"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(820,810)" name="Constant">
-      <a name="value" val="0xc"/>
+      <a name="value" val="0xe"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(900,860)" name="Tunnel">
