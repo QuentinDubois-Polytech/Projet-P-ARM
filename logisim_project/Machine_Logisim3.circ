@@ -162,13 +162,13 @@ end TCL_Generic;
   <lib desc="#BFH-Praktika" name="9"/>
   <lib desc="#Input/Output-Extra" name="10"/>
   <lib desc="#TTL" name="11"/>
-  <lib desc="file#BancDeRegistres.circ" name="12"/>
+  <lib desc="file#Controller.circ" name="12"/>
   <lib desc="file#ALU.circ" name="13">
     <tool name="ALU">
       <a name="facing" val="east"/>
     </tool>
   </lib>
-  <lib desc="file#Controller.circ" name="14"/>
+  <lib desc="file#BancDeRegistres.circ" name="14"/>
   <main name="Facade"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
@@ -1597,7 +1597,8 @@ end TCL_Generic;
       <a name="addrWidth" val="16"/>
       <a name="appearance" val="logisim_evolution"/>
       <a name="contents">addr/data: 16 16
-2000 2101 22aa 23ff 1a9c 1d55 26b3
+2000 2101 2214 4288 d4ff e7ff 4252 428a
+dbff e000 2032 e7f4 1883
 </a>
       <a name="dataWidth" val="16"/>
       <a name="label" val="ROMa"/>
@@ -2501,14 +2502,14 @@ end TCL_Generic;
       <a name="label" val="Ain"/>
       <a name="width" val="32"/>
     </comp>
-    <comp lib="12" loc="(990,140)" name="BancRegistre">
-      <a name="label" val="Regs_1"/>
+    <comp lib="12" loc="(530,390)" name="Controller">
+      <a name="label" val="Controller_1"/>
     </comp>
     <comp lib="13" loc="(920,450)" name="ALU">
       <a name="label" val="ALU_1"/>
     </comp>
-    <comp lib="14" loc="(530,390)" name="Controller">
-      <a name="label" val="Controller_1"/>
+    <comp lib="14" loc="(990,140)" name="BancRegistre">
+      <a name="label" val="Regs_1"/>
     </comp>
     <comp lib="2" loc="(340,1710)" name="Multiplexer">
       <a name="width" val="32"/>
