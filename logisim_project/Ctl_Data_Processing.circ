@@ -4,7 +4,6 @@
 
   <lib desc="#Wiring" name="0">
     <tool name="Splitter">
-      <a name="facing" val="west"/>
       <a name="fanout" val="4"/>
       <a name="incoming" val="1"/>
     </tool>
@@ -179,8 +178,13 @@ end TCL_Generic;
       <circ-port height="8" pin="210,130" width="8" x="46" y="56"/>
       <circ-port height="8" pin="420,70" width="8" x="46" y="76"/>
     </appear>
-    <comp lib="0" loc="(100,770)" name="Ground">
+    <comp lib="0" loc="(100,750)" name="Ground">
       <a name="facing" val="west"/>
+      <a name="width" val="3"/>
+    </comp>
+    <comp lib="0" loc="(110,780)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="Rn"/>
       <a name="width" val="3"/>
     </comp>
     <comp lib="0" loc="(160,640)" name="Tunnel">
@@ -509,12 +513,11 @@ end TCL_Generic;
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="Note: instructions that does not save the result will still have the second operand as the destination register, the ALU will copy the second register to the destination register"/>
     </comp>
-    <wire from="(100,770)" to="(120,770)"/>
-    <wire from="(120,750)" to="(120,770)"/>
-    <wire from="(120,750)" to="(190,750)"/>
-    <wire from="(120,770)" to="(120,780)"/>
-    <wire from="(120,770)" to="(190,770)"/>
-    <wire from="(120,780)" to="(190,780)"/>
+    <wire from="(100,750)" to="(190,750)"/>
+    <wire from="(110,780)" to="(130,780)"/>
+    <wire from="(130,770)" to="(130,780)"/>
+    <wire from="(130,770)" to="(190,770)"/>
+    <wire from="(130,780)" to="(190,780)"/>
     <wire from="(160,640)" to="(160,670)"/>
     <wire from="(160,670)" to="(160,680)"/>
     <wire from="(160,670)" to="(190,670)"/>
