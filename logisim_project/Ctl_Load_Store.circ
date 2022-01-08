@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project source="3.5.0" version="1.0">
-  This file is intended to be loaded by Logisim-evolution (https://github.com/reds-heig/logisim-evolution).
+<project source="3.7.2" version="1.0">
+  This file is intended to be loaded by Logisim-evolution v3.7.2(https://github.com/logisim-evolution/).
 
   <lib desc="#Wiring" name="0">
     <tool name="Splitter">
@@ -9,9 +9,11 @@
       <a name="incoming" val="1"/>
     </tool>
     <tool name="Pin">
+      <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
     </tool>
     <tool name="Probe">
+      <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
       <a name="radix" val="10unsigned"/>
     </tool>
@@ -47,54 +49,10 @@
     <tool name="OR Gate">
       <a name="size" val="30"/>
     </tool>
-    <tool name="PLA">
-      <a name="table" val=""/>
-    </tool>
   </lib>
-  <lib desc="#Plexers" name="2">
-    <tool name="Multiplexer">
-      <a name="enable" val="false"/>
-    </tool>
-    <tool name="Demultiplexer">
-      <a name="enable" val="false"/>
-    </tool>
-  </lib>
+  <lib desc="#Plexers" name="2"/>
   <lib desc="#Arithmetic" name="3"/>
-  <lib desc="#Memory" name="4">
-    <tool name="D Flip-Flop">
-      <a name="appearance" val="logisim_evolution"/>
-    </tool>
-    <tool name="T Flip-Flop">
-      <a name="appearance" val="logisim_evolution"/>
-    </tool>
-    <tool name="J-K Flip-Flop">
-      <a name="appearance" val="logisim_evolution"/>
-    </tool>
-    <tool name="S-R Flip-Flop">
-      <a name="appearance" val="logisim_evolution"/>
-    </tool>
-    <tool name="Register">
-      <a name="appearance" val="logisim_evolution"/>
-    </tool>
-    <tool name="Counter">
-      <a name="appearance" val="logisim_evolution"/>
-    </tool>
-    <tool name="Shift Register">
-      <a name="appearance" val="logisim_evolution"/>
-    </tool>
-    <tool name="Random">
-      <a name="appearance" val="logisim_evolution"/>
-    </tool>
-    <tool name="RAM">
-      <a name="appearance" val="logisim_evolution"/>
-    </tool>
-    <tool name="ROM">
-      <a name="appearance" val="logisim_evolution"/>
-      <a name="contents">addr/data: 8 8
-0
-</a>
-    </tool>
-  </lib>
+  <lib desc="#Memory" name="4"/>
   <lib desc="#I/O" name="5"/>
   <lib desc="#HDL-IP" name="6">
     <tool name="VHDL Entity">
@@ -161,9 +119,6 @@ end TCL_Generic;
   <lib desc="#Base" name="8">
     <tool name="Text Tool">
       <a name="font" val="SansSerif plain 12"/>
-      <a name="halign" val="center"/>
-      <a name="text" val=""/>
-      <a name="valign" val="base"/>
     </tool>
   </lib>
   <lib desc="#BFH-Praktika" name="9"/>
@@ -183,16 +138,10 @@ end TCL_Generic;
     <tool lib="8" name="Edit Tool"/>
     <tool lib="8" name="Text Tool">
       <a name="font" val="SansSerif plain 12"/>
-      <a name="halign" val="center"/>
-      <a name="text" val=""/>
-      <a name="valign" val="base"/>
     </tool>
     <sep/>
+    <tool lib="0" name="Pin"/>
     <tool lib="0" name="Pin">
-      <a name="appearance" val="NewPins"/>
-    </tool>
-    <tool lib="0" name="Pin">
-      <a name="appearance" val="NewPins"/>
       <a name="facing" val="west"/>
       <a name="output" val="true"/>
     </tool>
@@ -203,23 +152,8 @@ end TCL_Generic;
   <circuit name="Load_Store">
     <a name="appearance" val="custom"/>
     <a name="circuit" val="Load_Store"/>
-    <a name="circuitnamedboxfixedsize" val="false"/>
-    <a name="circuitvhdlpath" val=""/>
-    <a name="clabel" val=""/>
-    <a name="clabelfont" val="SansSerif bold 16"/>
-    <a name="clabelup" val="east"/>
+    <a name="simulationFrequency" val="1.0"/>
     <appear>
-      <circ-anchor facing="east" height="6" width="6" x="267" y="57"/>
-      <circ-port height="10" pin="640,180" width="10" x="265" y="95"/>
-      <circ-port height="10" pin="640,280" width="10" x="265" y="135"/>
-      <circ-port height="10" pin="640,380" width="10" x="265" y="55"/>
-      <circ-port height="10" pin="640,480" width="10" x="265" y="75"/>
-      <circ-port height="10" pin="640,90" width="10" x="265" y="115"/>
-      <circ-port height="8" pin="160,140" width="8" x="46" y="56"/>
-      <circ-port height="8" pin="190,460" width="8" x="46" y="116"/>
-      <circ-port height="8" pin="190,540" width="8" x="46" y="136"/>
-      <circ-port height="8" pin="210,630" width="8" x="46" y="96"/>
-      <circ-port height="8" pin="430,60" width="8" x="46" y="76"/>
       <rect fill="none" height="130" stroke="#000000" stroke-width="2" width="200" x="60" y="50"/>
       <rect height="20" stroke="none" width="200" x="60" y="160"/>
       <rect height="3" stroke="none" width="10" x="260" y="59"/>
@@ -243,6 +177,17 @@ end TCL_Generic;
       <text dominant-baseline="central" fill="#404040" font-family="SansSerif" font-size="12" text-anchor="middle" x="74" y="120">Clk</text>
       <text dominant-baseline="central" fill="#404040" font-family="SansSerif" font-size="12" text-anchor="middle" x="82" y="140">Reset</text>
       <text dominant-baseline="central" fill="#ffffff" font-family="Dialog" font-size="14" font-weight="bold" text-anchor="middle" x="159" y="170">Load_Store</text>
+      <circ-anchor facing="east" height="6" width="6" x="267" y="57"/>
+      <circ-port height="10" pin="640,180" width="10" x="265" y="95"/>
+      <circ-port height="10" pin="640,280" width="10" x="265" y="135"/>
+      <circ-port height="10" pin="640,380" width="10" x="265" y="55"/>
+      <circ-port height="10" pin="640,480" width="10" x="265" y="75"/>
+      <circ-port height="10" pin="640,90" width="10" x="265" y="115"/>
+      <circ-port height="8" pin="160,140" width="8" x="46" y="56"/>
+      <circ-port height="8" pin="190,460" width="8" x="46" y="116"/>
+      <circ-port height="8" pin="190,540" width="8" x="46" y="136"/>
+      <circ-port height="8" pin="210,630" width="8" x="46" y="96"/>
+      <circ-port height="8" pin="430,60" width="8" x="46" y="76"/>
     </appear>
     <comp lib="0" loc="(1130,750)" name="Tunnel">
       <a name="label" val="PC_Hold"/>
@@ -251,6 +196,7 @@ end TCL_Generic;
       <a name="label" val="Load"/>
     </comp>
     <comp lib="0" loc="(160,140)" name="Pin">
+      <a name="appearance" val="classic"/>
       <a name="label" val="Instruction"/>
       <a name="pull" val="down"/>
       <a name="tristate" val="true"/>
@@ -277,9 +223,11 @@ end TCL_Generic;
       <a name="incoming" val="16"/>
     </comp>
     <comp lib="0" loc="(190,460)" name="Pin">
+      <a name="appearance" val="classic"/>
       <a name="label" val="Clk"/>
     </comp>
     <comp lib="0" loc="(190,540)" name="Pin">
+      <a name="appearance" val="classic"/>
       <a name="label" val="Reset"/>
     </comp>
     <comp lib="0" loc="(210,140)" name="Tunnel">
@@ -290,6 +238,7 @@ end TCL_Generic;
       <a name="label" val="reset"/>
     </comp>
     <comp lib="0" loc="(210,630)" name="Pin">
+      <a name="appearance" val="classic"/>
       <a name="label" val="Stack_Pointer"/>
       <a name="width" val="32"/>
     </comp>
@@ -297,21 +246,12 @@ end TCL_Generic;
       <a name="label" val="SP"/>
       <a name="width" val="32"/>
     </comp>
-    <comp lib="0" loc="(220,770)" name="Tunnel">
-      <a name="facing" val="east"/>
-      <a name="label" val="imm8"/>
-      <a name="width" val="8"/>
-    </comp>
     <comp lib="0" loc="(230,460)" name="Tunnel">
       <a name="label" val="clk"/>
     </comp>
     <comp lib="0" loc="(250,110)" name="Tunnel">
       <a name="facing" val="south"/>
-      <a name="label" val="Rt"/>
-      <a name="width" val="3"/>
-    </comp>
-    <comp lib="0" loc="(250,790)" name="Constant">
-      <a name="value" val="0x2"/>
+      <a name="label" val="rmd"/>
       <a name="width" val="3"/>
     </comp>
     <comp lib="0" loc="(290,140)" name="Tunnel">
@@ -319,10 +259,16 @@ end TCL_Generic;
       <a name="label" val="imm8"/>
       <a name="width" val="8"/>
     </comp>
+    <comp lib="0" loc="(320,790)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="imm8"/>
+      <a name="width" val="8"/>
+    </comp>
     <comp lib="0" loc="(390,780)" name="Bit Extender">
       <a name="out_width" val="32"/>
     </comp>
     <comp lib="0" loc="(430,60)" name="Pin">
+      <a name="appearance" val="classic"/>
       <a name="facing" val="south"/>
       <a name="label" val="Enable"/>
     </comp>
@@ -397,28 +343,33 @@ end TCL_Generic;
       <a name="facing" val="north"/>
     </comp>
     <comp lib="0" loc="(640,180)" name="Pin">
+      <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="Load"/>
       <a name="output" val="true"/>
     </comp>
     <comp lib="0" loc="(640,280)" name="Pin">
+      <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="PC_Hold"/>
       <a name="output" val="true"/>
     </comp>
     <comp lib="0" loc="(640,380)" name="Pin">
+      <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="Rmd"/>
       <a name="output" val="true"/>
       <a name="width" val="3"/>
     </comp>
     <comp lib="0" loc="(640,480)" name="Pin">
+      <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="RAM_Addr"/>
       <a name="output" val="true"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(640,90)" name="Pin">
+      <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="Store"/>
       <a name="output" val="true"/>
@@ -461,10 +412,6 @@ end TCL_Generic;
     <comp lib="1" loc="(600,90)" name="Controlled Buffer">
       <a name="control" val="left"/>
     </comp>
-    <comp lib="1" loc="(880,670)" name="AND Gate">
-      <a name="size" val="30"/>
-    </comp>
-    <comp lib="3" loc="(310,780)" name="Shifter"/>
     <comp lib="3" loc="(490,770)" name="Adder">
       <a name="width" val="32"/>
     </comp>
@@ -489,12 +436,9 @@ end TCL_Generic;
     <wire from="(190,540)" to="(210,540)"/>
     <wire from="(210,140)" to="(210,150)"/>
     <wire from="(210,630)" to="(220,630)"/>
-    <wire from="(220,770)" to="(270,770)"/>
     <wire from="(250,110)" to="(250,160)"/>
-    <wire from="(250,790)" to="(270,790)"/>
-    <wire from="(270,770)" to="(270,780)"/>
     <wire from="(290,140)" to="(290,170)"/>
-    <wire from="(310,780)" to="(350,780)"/>
+    <wire from="(320,790)" to="(350,790)"/>
     <wire from="(350,780)" to="(350,790)"/>
     <wire from="(390,780)" to="(450,780)"/>
     <wire from="(430,60)" to="(430,80)"/>
@@ -523,21 +467,16 @@ end TCL_Generic;
     <wire from="(620,90)" to="(640,90)"/>
     <wire from="(730,600)" to="(780,600)"/>
     <wire from="(780,600)" to="(1060,600)"/>
-    <wire from="(780,600)" to="(780,680)"/>
-    <wire from="(780,680)" to="(780,760)"/>
-    <wire from="(780,680)" to="(850,680)"/>
+    <wire from="(780,600)" to="(780,670)"/>
+    <wire from="(780,670)" to="(780,760)"/>
+    <wire from="(780,670)" to="(910,670)"/>
     <wire from="(780,760)" to="(1060,760)"/>
-    <wire from="(830,640)" to="(830,660)"/>
-    <wire from="(830,640)" to="(980,640)"/>
-    <wire from="(830,660)" to="(850,660)"/>
-    <wire from="(880,670)" to="(910,670)"/>
     <wire from="(880,710)" to="(910,710)"/>
     <wire from="(930,740)" to="(940,740)"/>
     <wire from="(940,720)" to="(940,740)"/>
     <wire from="(970,670)" to="(980,670)"/>
     <wire from="(980,620)" to="(1060,620)"/>
-    <wire from="(980,620)" to="(980,640)"/>
-    <wire from="(980,640)" to="(980,670)"/>
+    <wire from="(980,620)" to="(980,670)"/>
     <wire from="(980,670)" to="(980,740)"/>
     <wire from="(980,740)" to="(1060,740)"/>
   </circuit>
