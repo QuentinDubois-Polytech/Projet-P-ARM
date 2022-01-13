@@ -321,9 +321,6 @@ end TCL_Generic;
       <a name="label" val="I6_8"/>
       <a name="width" val="3"/>
     </comp>
-    <comp lib="0" loc="(280,1970)" name="Constant">
-      <a name="width" val="32"/>
-    </comp>
     <comp lib="0" loc="(280,470)" name="Tunnel">
       <a name="facing" val="south"/>
       <a name="label" val="I12"/>
@@ -916,11 +913,6 @@ end TCL_Generic;
       <a name="output" val="true"/>
       <a name="width" val="32"/>
     </comp>
-    <comp lib="1" loc="(340,2010)" name="NOT Gate">
-      <a name="facing" val="west"/>
-      <a name="size" val="20"/>
-      <a name="width" val="32"/>
-    </comp>
     <comp lib="1" loc="(840,330)" name="NAND Gate">
       <a name="size" val="30"/>
     </comp>
@@ -1012,7 +1004,7 @@ end TCL_Generic;
       <a name="select" val="3"/>
       <a name="width" val="3"/>
     </comp>
-    <comp lib="3" loc="(350,1980)" name="Adder">
+    <comp lib="3" loc="(340,1980)" name="Negator">
       <a name="width" val="32"/>
     </comp>
     <comp lib="3" loc="(740,310)" name="Comparator">
@@ -1128,10 +1120,9 @@ end TCL_Generic;
     <wire from="(280,1550)" to="(290,1550)"/>
     <wire from="(280,1560)" to="(280,1580)"/>
     <wire from="(280,1560)" to="(290,1560)"/>
-    <wire from="(280,1970)" to="(310,1970)"/>
-    <wire from="(280,1990)" to="(280,2010)"/>
-    <wire from="(280,1990)" to="(310,1990)"/>
-    <wire from="(280,2010)" to="(340,2010)"/>
+    <wire from="(280,1980)" to="(280,2010)"/>
+    <wire from="(280,1980)" to="(300,1980)"/>
+    <wire from="(280,2010)" to="(400,2010)"/>
     <wire from="(280,470)" to="(280,520)"/>
     <wire from="(280,520)" to="(320,520)"/>
     <wire from="(280,580)" to="(280,630)"/>
@@ -1174,16 +1165,15 @@ end TCL_Generic;
     <wire from="(330,1550)" to="(390,1550)"/>
     <wire from="(330,610)" to="(350,610)"/>
     <wire from="(330,710)" to="(350,710)"/>
+    <wire from="(340,1980)" to="(430,1980)"/>
     <wire from="(350,100)" to="(350,220)"/>
     <wire from="(350,1000)" to="(350,1050)"/>
     <wire from="(350,1050)" to="(380,1050)"/>
     <wire from="(350,1310)" to="(360,1310)"/>
-    <wire from="(350,1980)" to="(430,1980)"/>
     <wire from="(350,2080)" to="(400,2080)"/>
     <wire from="(350,800)" to="(350,910)"/>
     <wire from="(350,910)" to="(500,910)"/>
     <wire from="(360,1930)" to="(390,1930)"/>
-    <wire from="(360,2010)" to="(400,2010)"/>
     <wire from="(370,1030)" to="(370,1040)"/>
     <wire from="(370,1040)" to="(380,1040)"/>
     <wire from="(370,130)" to="(370,230)"/>
