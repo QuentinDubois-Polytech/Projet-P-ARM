@@ -15,7 +15,6 @@ line_instruction_main = 0
 
 def line_analyser(assembly_language_instruction):
     """ Analyse an instruction of assembly language and redirect it into the right function"""
-    # print(assembly_language_instruction)
     list_instruction = list_conversion(assembly_language_instruction)
     if len(list_instruction) == 2:
         if assembly_language_instruction[0] == 'b' and list_instruction[0] != "bics":
@@ -369,27 +368,25 @@ def read_file():
     global line_counter
     global line_instruction_main
 
-    file_line = file_read.readline().strip()
-    while file_line != '':
+    while file_line := file_read.readline().strip():
         line_counter += 1
+
+        if file_read is None:
+            break
         if not file_line.startswith('.') and not file_line.startswith(
                 '@') and file_line != '\n':  # to skip the comments and empty line
             line_instruction_main += 1
             line_analyser(file_line.strip())
-        file_line = file_read.readline().strip()
-
 
 def read_file_search_label(label):
     line_instruction_secondary = 0
     file_read.seek(0)
-    file_line = file_read.readline().strip()
 
-    while file_line != '':
+    while file_line := file_read.readline().strip():
         if not file_line.startswith('.') and not file_line.startswith('@') and file_line != '\n':
             line_instruction_secondary += 1
         if file_line == "." + label + ":":  # to skip the comments and empty line
             return line_instruction_secondary + 1
-        file_line = file_read.readline().strip()
 
 
 if __name__ == '__main__':
